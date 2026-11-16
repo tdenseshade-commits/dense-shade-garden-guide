@@ -71,7 +71,7 @@ function TodayPage() {
                 </span>
                 <div className="min-w-0">
                   <p className="truncate font-semibold">{label}</p>
-                  <p className="truncate text-sm text-muted-foreground">{hint}</p>
+                  <p className="text-sm leading-snug text-muted-foreground">{hint}</p>
                 </div>
                 <ComingSoon />
               </div>
