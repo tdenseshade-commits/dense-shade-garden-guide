@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          experience_level:
+            | Database["public"]["Enums"]["experience_level"]
+            | null
+          explanation_level:
+            | Database["public"]["Enums"]["explanation_level"]
+            | null
+          growing_region: string | null
+          id: string
+          onboarding_completed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          experience_level?:
+            | Database["public"]["Enums"]["experience_level"]
+            | null
+          explanation_level?:
+            | Database["public"]["Enums"]["explanation_level"]
+            | null
+          growing_region?: string | null
+          id: string
+          onboarding_completed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          experience_level?:
+            | Database["public"]["Enums"]["experience_level"]
+            | null
+          explanation_level?:
+            | Database["public"]["Enums"]["explanation_level"]
+            | null
+          growing_region?: string | null
+          id?: string
+          onboarding_completed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +67,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      experience_level: "beginner" | "intermediate" | "advanced"
+      explanation_level: "simple" | "standard" | "advanced"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +195,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      experience_level: ["beginner", "intermediate", "advanced"],
+      explanation_level: ["simple", "standard", "advanced"],
+    },
   },
 } as const

@@ -13,14 +13,17 @@ import { useEffect, type ReactNode } from "react";
 import { MapPinOff } from "lucide-react";
 
 import appCss from "../styles.css?url";
-import { AppShell } from "@/components/layout/AppShell";
+import { Toaster } from "@/components/ui/sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { EmptyState, ErrorState } from "@/components/common/StateViews";
 import { Button } from "@/components/ui/button";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
-    <EmptyState
+    <div className="flex min-h-screen items-center justify-center bg-background px-5">
+      <EmptyState
+        className="w-full max-w-md"
       icon={MapPinOff}
       title="This path is overgrown"
       description="The page you're looking for doesn't exist or has moved."
@@ -29,7 +32,8 @@ function NotFoundComponent() {
           <Link to="/">Back to Today</Link>
         </Button>
       }
-    />
+      />
+    </div>
   );
 }
 
@@ -118,13 +122,24 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // One app-wide listener: refresh route guards when someone signs in or out.
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      if (event === "SIGNED_OUT") queryClient.clear();
+      router.invalidate();
+      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppShell>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </AppShell>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+      <Toaster position="top-center" />
     </QueryClientProvider>
   );
 }

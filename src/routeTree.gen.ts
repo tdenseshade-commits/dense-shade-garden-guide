@@ -9,122 +9,256 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as CareRouteImport } from './routes/care'
-import { Route as DiscoverRouteImport } from './routes/discover'
-import { Route as GardenRouteImport } from './routes/garden'
-import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedMainRouteRouteImport } from './routes/_authenticated/_main/route'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedMainIndexRouteImport } from './routes/_authenticated/_main/index'
+import { Route as AuthenticatedMainCareRouteImport } from './routes/_authenticated/_main/care'
+import { Route as AuthenticatedMainDiscoverRouteImport } from './routes/_authenticated/_main/discover'
+import { Route as AuthenticatedMainGardenRouteImport } from './routes/_authenticated/_main/garden'
+import { Route as AuthenticatedMainProfileRouteImport } from './routes/_authenticated/_main/profile'
 
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMainRouteRoute = AuthenticatedMainRouteRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMainIndexRoute = AuthenticatedMainIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedMainRouteRoute,
 } as any)
-const CareRoute = CareRouteImport.update({
+const AuthenticatedMainCareRoute = AuthenticatedMainCareRouteImport.update({
   id: '/care',
   path: '/care',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedMainRouteRoute,
 } as any)
-const DiscoverRoute = DiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GardenRoute = GardenRouteImport.update({
+const AuthenticatedMainDiscoverRoute =
+  AuthenticatedMainDiscoverRouteImport.update({
+    id: '/discover',
+    path: '/discover',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
+const AuthenticatedMainGardenRoute = AuthenticatedMainGardenRouteImport.update({
   id: '/garden',
   path: '/garden',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedMainRouteRoute,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedMainProfileRoute =
+  AuthenticatedMainProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/care': typeof CareRoute
-  '/discover': typeof DiscoverRoute
-  '/garden': typeof GardenRoute
-  '/profile': typeof ProfileRoute
+  '/': typeof AuthenticatedMainIndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/care': typeof AuthenticatedMainCareRoute
+  '/discover': typeof AuthenticatedMainDiscoverRoute
+  '/garden': typeof AuthenticatedMainGardenRoute
+  '/profile': typeof AuthenticatedMainProfileRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/care': typeof CareRoute
-  '/discover': typeof DiscoverRoute
-  '/garden': typeof GardenRoute
-  '/profile': typeof ProfileRoute
+  '/': typeof AuthenticatedMainIndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/care': typeof AuthenticatedMainCareRoute
+  '/discover': typeof AuthenticatedMainDiscoverRoute
+  '/garden': typeof AuthenticatedMainGardenRoute
+  '/profile': typeof AuthenticatedMainProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/care': typeof CareRoute
-  '/discover': typeof DiscoverRoute
-  '/garden': typeof GardenRoute
-  '/profile': typeof ProfileRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/_main': typeof AuthenticatedMainRouteRouteWithChildren
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/_main/care': typeof AuthenticatedMainCareRoute
+  '/_authenticated/_main/discover': typeof AuthenticatedMainDiscoverRoute
+  '/_authenticated/_main/garden': typeof AuthenticatedMainGardenRoute
+  '/_authenticated/_main/profile': typeof AuthenticatedMainProfileRoute
+  '/_authenticated/_main/': typeof AuthenticatedMainIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/care' | '/discover' | '/garden' | '/profile'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/onboarding'
+    | '/care'
+    | '/discover'
+    | '/garden'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/care' | '/discover' | '/garden' | '/profile'
-  id: '__root__' | '/' | '/care' | '/discover' | '/garden' | '/profile'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/onboarding'
+    | '/care'
+    | '/discover'
+    | '/garden'
+    | '/profile'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/_main'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/_main/care'
+    | '/_authenticated/_main/discover'
+    | '/_authenticated/_main/garden'
+    | '/_authenticated/_main/profile'
+    | '/_authenticated/_main/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CareRoute: typeof CareRoute
-  DiscoverRoute: typeof DiscoverRoute
-  GardenRoute: typeof GardenRoute
-  ProfileRoute: typeof ProfileRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_main': {
+      id: '/_authenticated/_main'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedMainRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_main/': {
+      id: '/_authenticated/_main/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMainIndexRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
     }
-    '/care': {
-      id: '/care'
+    '/_authenticated/_main/care': {
+      id: '/_authenticated/_main/care'
       path: '/care'
       fullPath: '/care'
-      preLoaderRoute: typeof CareRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMainCareRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
     }
-    '/discover': {
-      id: '/discover'
+    '/_authenticated/_main/discover': {
+      id: '/_authenticated/_main/discover'
       path: '/discover'
       fullPath: '/discover'
-      preLoaderRoute: typeof DiscoverRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMainDiscoverRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
     }
-    '/garden': {
-      id: '/garden'
+    '/_authenticated/_main/garden': {
+      id: '/_authenticated/_main/garden'
       path: '/garden'
       fullPath: '/garden'
-      preLoaderRoute: typeof GardenRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMainGardenRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
     }
-    '/profile': {
-      id: '/profile'
+    '/_authenticated/_main/profile': {
+      id: '/_authenticated/_main/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMainProfileRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
     }
   }
 }
 
+interface AuthenticatedMainRouteRouteChildren {
+  AuthenticatedMainCareRoute: typeof AuthenticatedMainCareRoute
+  AuthenticatedMainDiscoverRoute: typeof AuthenticatedMainDiscoverRoute
+  AuthenticatedMainGardenRoute: typeof AuthenticatedMainGardenRoute
+  AuthenticatedMainProfileRoute: typeof AuthenticatedMainProfileRoute
+  AuthenticatedMainIndexRoute: typeof AuthenticatedMainIndexRoute
+}
+
+const AuthenticatedMainRouteRouteChildren: AuthenticatedMainRouteRouteChildren =
+  {
+    AuthenticatedMainCareRoute: AuthenticatedMainCareRoute,
+    AuthenticatedMainDiscoverRoute: AuthenticatedMainDiscoverRoute,
+    AuthenticatedMainGardenRoute: AuthenticatedMainGardenRoute,
+    AuthenticatedMainProfileRoute: AuthenticatedMainProfileRoute,
+    AuthenticatedMainIndexRoute: AuthenticatedMainIndexRoute,
+  }
+
+const AuthenticatedMainRouteRouteWithChildren =
+  AuthenticatedMainRouteRoute._addFileChildren(
+    AuthenticatedMainRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMainRouteRoute: typeof AuthenticatedMainRouteRouteWithChildren
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMainRouteRoute: AuthenticatedMainRouteRouteWithChildren,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CareRoute: CareRoute,
-  DiscoverRoute: DiscoverRoute,
-  GardenRoute: GardenRoute,
-  ProfileRoute: ProfileRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

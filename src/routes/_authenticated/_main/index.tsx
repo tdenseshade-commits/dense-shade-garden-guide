@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Camera, MessageCircleQuestion, Sprout } from "lucide-react";
 
@@ -6,11 +7,13 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { EmptyState } from "@/components/common/StateViews";
 import { Button } from "@/components/ui/button";
+import { profileQueryOptions } from "@/lib/profile";
 import { pageMeta } from "@/lib/seo";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/_main/")({
   head: () =>
     pageMeta("Today", "See what your garden needs today, at a calm and easy pace."),
+  loader: ({ context }) => context.queryClient.ensureQueryData(profileQueryOptions(context.user.id)),
   component: TodayPage,
 });
 
@@ -20,10 +23,12 @@ const contextualActions = [
 ];
 
 function TodayPage() {
+  const { user } = Route.useRouteContext();
+  const { data: profile } = useSuspenseQuery(profileQueryOptions(user.id));
   return (
     <>
       <PageHeader
-        eyebrow="Today"
+        eyebrow={profile?.display_name ? `Today · Hello, ${profile.display_name}` : "Today"}
         title="Peace in your garden."
         description="Ease in your day. Here's what your plants need, nothing more."
       />

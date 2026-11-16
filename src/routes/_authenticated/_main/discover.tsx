@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { PLANT_CATEGORIES } from "@/lib/categories";
 import { pageMeta } from "@/lib/seo";
 
-export const Route = createFileRoute("/discover")({
+export const Route = createFileRoute("/_authenticated/_main/discover")({
   head: () => pageMeta("Discover", "Explore plants by category and find something new to grow."),
   component: DiscoverPage,
 });

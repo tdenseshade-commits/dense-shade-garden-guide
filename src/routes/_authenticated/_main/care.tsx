@@ -7,7 +7,7 @@ import { SectionCard } from "@/components/common/SectionCard";
 import { EmptyState } from "@/components/common/StateViews";
 import { pageMeta } from "@/lib/seo";
 
-export const Route = createFileRoute("/care")({
+export const Route = createFileRoute("/_authenticated/_main/care")({
   head: () => pageMeta("Care", "Simple care tasks, reminders and notes for your plants."),
   component: CarePage,
 });

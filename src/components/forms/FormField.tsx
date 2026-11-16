@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 
 interface FormFieldProps {
   label: string;
-  hint?: string;
-  error?: string;
-  className?: string;
+  hint?: string | undefined;
+  error?: string | undefined;
+  className?: string | undefined;
   /** A single input-like control (Input, Textarea, Select trigger…). It receives id and aria props. */
   children: ReactElement<Record<string, unknown>>;
 }

@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/common/StateViews";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/seo";
 
-export const Route = createFileRoute("/garden")({
+export const Route = createFileRoute("/_authenticated/_main/garden")({
   head: () => pageMeta("My Garden", "All of your plants in one calm, simple place."),
   component: GardenPage,
 });
