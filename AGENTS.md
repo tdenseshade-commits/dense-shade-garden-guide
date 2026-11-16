@@ -28,3 +28,13 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- The five main destinations live in `src/lib/navigation.ts` (`NAV_ITEMS`); the mobile tab bar and desktop side rail both render from it, so add or rename tabs only there. Why: one source keeps both navs in sync.
+- Every page renders inside `AppShell` (mounted in `__root.tsx`); pages compose `PageHeader`, `SectionCard`, `EmptyState`/`LoadingState`/`ErrorState` and `FormField` from `src/components` instead of bespoke markup. Why: consistent look and reuse.
+- Router-level `defaultPendingComponent`/`defaultErrorComponent` in `src/router.tsx` supply page loading and error states. Why: every route gets them for free.
+- Brand colours are named tokens in `src/styles.css` (pine, sage, leaf, terracotta, cedar, mist, cream) mapped onto shadcn variables; components use tokens only. Why: palette stays approved and themeable.
+- The logo is rendered only through `src/components/brand/Logo.tsx` from its asset pointer. Why: the mark must never be altered.
+- Unfinished features are shown with the `ComingSoon` badge, never as working. Why: simulated features must be clearly labelled.
+- Use `pageMeta()` from `src/lib/seo.ts` in each route's `head()`. Why: unique titles/descriptions per page.
