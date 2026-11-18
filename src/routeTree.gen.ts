@@ -19,6 +19,9 @@ import { Route as AuthenticatedMainCareRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedMainDiscoverRouteImport } from './routes/_authenticated/_main/discover'
 import { Route as AuthenticatedMainGardenRouteImport } from './routes/_authenticated/_main/garden'
 import { Route as AuthenticatedMainProfileRouteImport } from './routes/_authenticated/_main/profile'
+import { Route as AuthenticatedMainDiscoverCategoryRouteImport } from './routes/_authenticated/_main/discover_.$category'
+import { Route as AuthenticatedMainGardenPlantIdRouteImport } from './routes/_authenticated/_main/garden_.$plantId'
+import { Route as AuthenticatedMainPlantsSpeciesIdRouteImport } from './routes/_authenticated/_main/plants.$speciesId'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -70,6 +73,24 @@ const AuthenticatedMainProfileRoute =
     path: '/profile',
     getParentRoute: () => AuthenticatedMainRouteRoute,
   } as any)
+const AuthenticatedMainDiscoverCategoryRoute =
+  AuthenticatedMainDiscoverCategoryRouteImport.update({
+    id: '/discover_/$category',
+    path: '/discover/$category',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
+const AuthenticatedMainGardenPlantIdRoute =
+  AuthenticatedMainGardenPlantIdRouteImport.update({
+    id: '/garden_/$plantId',
+    path: '/garden/$plantId',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
+const AuthenticatedMainPlantsSpeciesIdRoute =
+  AuthenticatedMainPlantsSpeciesIdRouteImport.update({
+    id: '/plants/$speciesId',
+    path: '/plants/$speciesId',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedMainIndexRoute
@@ -80,6 +101,9 @@ export interface FileRoutesByFullPath {
   '/discover': typeof AuthenticatedMainDiscoverRoute
   '/garden': typeof AuthenticatedMainGardenRoute
   '/profile': typeof AuthenticatedMainProfileRoute
+  '/discover/$category': typeof AuthenticatedMainDiscoverCategoryRoute
+  '/garden/$plantId': typeof AuthenticatedMainGardenPlantIdRoute
+  '/plants/$speciesId': typeof AuthenticatedMainPlantsSpeciesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AuthenticatedMainIndexRoute
@@ -90,6 +114,9 @@ export interface FileRoutesByTo {
   '/discover': typeof AuthenticatedMainDiscoverRoute
   '/garden': typeof AuthenticatedMainGardenRoute
   '/profile': typeof AuthenticatedMainProfileRoute
+  '/discover/$category': typeof AuthenticatedMainDiscoverCategoryRoute
+  '/garden/$plantId': typeof AuthenticatedMainGardenPlantIdRoute
+  '/plants/$speciesId': typeof AuthenticatedMainPlantsSpeciesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,6 +130,9 @@ export interface FileRoutesById {
   '/_authenticated/_main/garden': typeof AuthenticatedMainGardenRoute
   '/_authenticated/_main/profile': typeof AuthenticatedMainProfileRoute
   '/_authenticated/_main/': typeof AuthenticatedMainIndexRoute
+  '/_authenticated/_main/discover_/$category': typeof AuthenticatedMainDiscoverCategoryRoute
+  '/_authenticated/_main/garden_/$plantId': typeof AuthenticatedMainGardenPlantIdRoute
+  '/_authenticated/_main/plants/$speciesId': typeof AuthenticatedMainPlantsSpeciesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,6 +145,9 @@ export interface FileRouteTypes {
     | '/discover'
     | '/garden'
     | '/profile'
+    | '/discover/$category'
+    | '/garden/$plantId'
+    | '/plants/$speciesId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -125,6 +158,9 @@ export interface FileRouteTypes {
     | '/discover'
     | '/garden'
     | '/profile'
+    | '/discover/$category'
+    | '/garden/$plantId'
+    | '/plants/$speciesId'
   id:
     | '__root__'
     | '/_authenticated'
@@ -137,6 +173,9 @@ export interface FileRouteTypes {
     | '/_authenticated/_main/garden'
     | '/_authenticated/_main/profile'
     | '/_authenticated/_main/'
+    | '/_authenticated/_main/discover_/$category'
+    | '/_authenticated/_main/garden_/$plantId'
+    | '/_authenticated/_main/plants/$speciesId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -217,6 +256,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMainProfileRouteImport
       parentRoute: typeof AuthenticatedMainRouteRoute
     }
+    '/_authenticated/_main/discover_/$category': {
+      id: '/_authenticated/_main/discover_/$category'
+      path: '/discover/$category'
+      fullPath: '/discover/$category'
+      preLoaderRoute: typeof AuthenticatedMainDiscoverCategoryRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
+    }
+    '/_authenticated/_main/garden_/$plantId': {
+      id: '/_authenticated/_main/garden_/$plantId'
+      path: '/garden/$plantId'
+      fullPath: '/garden/$plantId'
+      preLoaderRoute: typeof AuthenticatedMainGardenPlantIdRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
+    }
+    '/_authenticated/_main/plants/$speciesId': {
+      id: '/_authenticated/_main/plants/$speciesId'
+      path: '/plants/$speciesId'
+      fullPath: '/plants/$speciesId'
+      preLoaderRoute: typeof AuthenticatedMainPlantsSpeciesIdRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
+    }
   }
 }
 
@@ -226,6 +286,9 @@ interface AuthenticatedMainRouteRouteChildren {
   AuthenticatedMainGardenRoute: typeof AuthenticatedMainGardenRoute
   AuthenticatedMainProfileRoute: typeof AuthenticatedMainProfileRoute
   AuthenticatedMainIndexRoute: typeof AuthenticatedMainIndexRoute
+  AuthenticatedMainDiscoverCategoryRoute: typeof AuthenticatedMainDiscoverCategoryRoute
+  AuthenticatedMainGardenPlantIdRoute: typeof AuthenticatedMainGardenPlantIdRoute
+  AuthenticatedMainPlantsSpeciesIdRoute: typeof AuthenticatedMainPlantsSpeciesIdRoute
 }
 
 const AuthenticatedMainRouteRouteChildren: AuthenticatedMainRouteRouteChildren =
@@ -235,6 +298,11 @@ const AuthenticatedMainRouteRouteChildren: AuthenticatedMainRouteRouteChildren =
     AuthenticatedMainGardenRoute: AuthenticatedMainGardenRoute,
     AuthenticatedMainProfileRoute: AuthenticatedMainProfileRoute,
     AuthenticatedMainIndexRoute: AuthenticatedMainIndexRoute,
+    AuthenticatedMainDiscoverCategoryRoute:
+      AuthenticatedMainDiscoverCategoryRoute,
+    AuthenticatedMainGardenPlantIdRoute: AuthenticatedMainGardenPlantIdRoute,
+    AuthenticatedMainPlantsSpeciesIdRoute:
+      AuthenticatedMainPlantsSpeciesIdRoute,
   }
 
 const AuthenticatedMainRouteRouteWithChildren =
