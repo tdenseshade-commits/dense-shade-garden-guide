@@ -30,7 +30,12 @@ export function SpeciesCard({ species, inGarden }: { species: Species; inGarden?
       <div className="flex flex-1 flex-col gap-1 p-4">
         <p className="font-semibold leading-snug">{species.commonName}</p>
         <p className="text-sm italic text-muted-foreground">{species.scientificName}</p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        <p className="mt-1 line-clamp-2 text-sm leading-snug">{species.summary}</p>
+        <dl className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+          <div className="flex gap-1"><dt className="font-semibold">Light:</dt><dd className="line-clamp-1">{species.light}</dd></div>
+          <div className="flex gap-1"><dt className="font-semibold">Water:</dt><dd className="line-clamp-1">{species.water}</dd></div>
+        </dl>
+        <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
           <Badge variant="outline">{species.difficulty}</Badge>
           {inGarden && <Badge variant="soft">In my garden</Badge>}
         </div>
