@@ -6,7 +6,10 @@ import { ComingSoon } from "@/components/common/ComingSoon";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { EmptyState } from "@/components/common/StateViews";
+import { TaskRow } from "@/components/plants/PlantBits";
 import { Button } from "@/components/ui/button";
+import { taskStatus, useDemo } from "@/lib/demo/store";
+import { format } from "date-fns";
 import { profileQueryOptions } from "@/lib/profile";
 import { pageMeta } from "@/lib/seo";
 
@@ -25,6 +28,10 @@ const contextualActions = [
 function TodayPage() {
   const { user } = Route.useRouteContext();
   const { data: profile } = useSuspenseQuery(profileQueryOptions(user.id));
+  const { tasks, logs } = useDemo();
+  const today = format(new Date(), "yyyy-MM-dd");
+  const todays = tasks.filter((t) => ["today", "overdue"].includes(taskStatus(t))).sort((a, b) => a.dueOn.localeCompare(b.dueOn));
+  const doneToday = logs.filter((l) => l.doneAt.slice(0, 10) === today).length;
   return (
     <>
       <PageHeader
@@ -49,16 +56,16 @@ function TodayPage() {
           </Button>
         </section>
 
-        <SectionCard title="Today's care" description="Watering, feeding and gentle check-ins.">
-          <EmptyState
-            title="Nothing to do today"
-            description="Once you add plants, their care tasks will appear here."
-            action={
-              <Button asChild variant="outline">
-                <Link to="/care">View care</Link>
-              </Button>
-            }
-          />
+        <SectionCard
+          title="Today's care"
+          description={todays.length ? `${todays.length} gentle task${todays.length === 1 ? "" : "s"} · ${doneToday} done today` : "Watering, feeding and gentle check-ins."}
+          action={<Button asChild variant="outline" size="sm"><Link to="/care">View care</Link></Button>}
+        >
+          {todays.length ? (
+            <ul className="space-y-2">{todays.slice(0, 4).map((t) => <TaskRow key={t.id} task={t} />)}</ul>
+          ) : (
+            <EmptyState title="Nothing to do today" description="Enjoy your garden. Upcoming care is on the Care page." />
+          )}
         </SectionCard>
 
         <section aria-labelledby="quick-help" className="space-y-3">

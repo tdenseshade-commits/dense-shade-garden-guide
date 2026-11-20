@@ -22,7 +22,7 @@ export interface Species {
 
 export type Health = "thriving" | "healthy" | "needs_attention" | "struggling";
 
-export type CareType = "water" | "fertilise" | "prune" | "clean" | "repot" | "inspect";
+export type CareType = "water" | "fertilise" | "prune" | "clean" | "repot" | "inspect" | "general";
 
 export interface Observation {
   id: string;

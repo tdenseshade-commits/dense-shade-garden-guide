@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { format, parseISO } from "date-fns";
-import { Check } from "lucide-react";
+import { CalendarDays, Check, Clock } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getSpecies, speciesImage } from "@/lib/demo/catalog";
-import { CARE_LABELS, HEALTH_LABELS, demo, taskStatus } from "@/lib/demo/store";
+import { CARE_LABELS, CARE_TIPS, HEALTH_LABELS, demo, taskStatus, useDemo } from "@/lib/demo/store";
 import type { CareTask, GardenPlant, Health, Species } from "@/lib/demo/types";
 import { cn } from "@/lib/utils";
 
@@ -65,37 +67,70 @@ export function GardenPlantCard({ plant }: { plant: GardenPlant }) {
   );
 }
 
-const STATUS_LABEL = { overdue: "Overdue", today: "Due today", upcoming: "Upcoming", completed: "Done" } as const;
+// Gentle wording: nothing is ever "late" or "missed".
+const STATUS_LABEL = { overdue: "Whenever you can", today: "Due today", upcoming: "Coming up", completed: "Done" } as const;
 
+/** A care task card: plant photo, activity, due date, instructions, status and actions. */
 export function TaskRow({ task, plant, showPlant = true }: { task: CareTask; plant?: GardenPlant; showPlant?: boolean }) {
+  const { plants } = useDemo();
+  const owner = plant ?? plants.find((p) => p.id === task.plantId);
+  const species = owner && getSpecies(owner.speciesId);
   const status = taskStatus(task);
   const done = status === "completed";
+  const [showTip, setShowTip] = useState(false);
   return (
-    <li className="flex items-center gap-3 rounded-2xl border bg-background/60 p-3">
-      <div className="min-w-0 flex-1">
-        <p className={cn("font-medium", done && "text-muted-foreground line-through")}>
-          {CARE_LABELS[task.type]}
-          {showPlant && plant && (
-            <>
-              {" · "}
-              <Link to="/garden/$plantId" params={{ plantId: plant.id }} className="underline-offset-2 hover:underline">
-                {plant.nickname}
-              </Link>
-            </>
-          )}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          <span className={cn(status === "overdue" && "font-semibold text-highlight")}>{STATUS_LABEL[status]}</span>
-          {" · "}
-          {format(parseISO(done && task.completedAt ? task.completedAt : task.dueOn), "EEE d MMM")}
-          {task.note && ` · ${task.note}`}
-        </p>
+    <li className="rounded-2xl border bg-background/60 p-3">
+      <div className="flex items-start gap-3">
+        {showPlant && species && (
+          <img src={speciesImage(species)} alt="" loading="lazy" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+        )}
+        <div className="min-w-0 flex-1">
+          <p className={cn("font-medium", done && "text-muted-foreground line-through")}>
+            {CARE_LABELS[task.type]}
+            {showPlant && owner && (
+              <>
+                {" · "}
+                <Link to="/garden/$plantId" params={{ plantId: owner.id }} className="underline-offset-2 hover:underline">
+                  {owner.nickname}
+                </Link>
+              </>
+            )}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            <span className={cn(status === "today" && "font-semibold text-sage")}>{STATUS_LABEL[status]}</span>
+            {" · "}
+            {format(parseISO(done && task.completedAt ? task.completedAt : task.dueOn), "EEE d MMM")}
+          </p>
+          <p className="mt-1 text-sm leading-snug">{task.note || CARE_TIPS[task.type]}</p>
+          {showTip && <p className="mt-2 rounded-xl bg-mist p-2 text-sm leading-snug">{CARE_TIPS[task.type]}</p>}
+        </div>
+        {done && <Badge variant="soft">Done</Badge>}
       </div>
       {!done && (
-        <Button size="sm" variant="outline" onClick={() => demo.completeTask(task.id)} aria-label={`Mark ${CARE_LABELS[task.type]} done`}>
-          <Check aria-hidden />
-          Done
-        </Button>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Button size="sm" onClick={() => { demo.completeTask(task.id); toast.success("Nicely done. Added to care history."); }} aria-label={`Mark ${CARE_LABELS[task.type]} done`}>
+            <Check aria-hidden />
+            Done
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => { demo.snoozeTask(task.id, 1); toast("Moved to tomorrow. No rush."); }}>
+            <Clock aria-hidden />
+            Tomorrow
+          </Button>
+          <label className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+            <span className="sr-only">Reschedule</span>
+            <CalendarDays className="h-4 w-4" aria-hidden />
+            <input
+              type="date"
+              aria-label={`Reschedule ${CARE_LABELS[task.type]}`}
+              value={task.dueOn}
+              onChange={(e) => { if (e.target.value) { demo.rescheduleTask(task.id, e.target.value); toast("Rescheduled."); } }}
+              className="rounded-lg border bg-background px-2 py-1 text-sm text-foreground"
+            />
+          </label>
+          <Button size="sm" variant="ghost" onClick={() => setShowTip((v) => !v)} aria-expanded={showTip}>
+            {showTip ? "Hide how-to" : "How to"}
+          </Button>
+        </div>
       )}
     </li>
   );

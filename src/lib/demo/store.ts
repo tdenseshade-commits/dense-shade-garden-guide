@@ -57,6 +57,18 @@ export const CARE_LABELS: Record<CareType, string> = {
   clean: "Clean leaves",
   repot: "Repot",
   inspect: "Inspect",
+  general: "General care",
+};
+
+/** Short, beginner-friendly instructions per activity type. */
+export const CARE_TIPS: Record<CareType, string> = {
+  water: "Check the top few centimetres of soil first. Water slowly until it drains, then empty the saucer.",
+  fertilise: "Use a half-strength feed on damp soil. Skip it if the plant looks stressed.",
+  prune: "Snip just above a leaf node with clean scissors. Remove only what looks tired or leggy.",
+  clean: "Wipe leaves gently with a soft damp cloth so they can soak up light.",
+  repot: "Move up one pot size with fresh mix. Water lightly and let it rest out of harsh sun.",
+  inspect: "Look under leaves and along stems for pests, spots or soft patches. Just notice - no rush.",
+  general: "A quick tidy: remove fallen leaves, turn the pot a little and check it is happy where it is.",
 };
 
 export const HEALTH_LABELS: Record<Health, string> = {
@@ -114,6 +126,14 @@ export const demo = {
       tasks.push({ ...task, id: uid("t"), completedAt: null, dueOn: format(addDays(new Date(), task.repeatEveryDays), "yyyy-MM-dd") });
     const log = { id: uid("l"), plantId: task.plantId, type: task.type, doneAt: at, note: task.note, taskId };
     commit({ ...s, tasks, logs: [log, ...s.logs] });
+  },
+  /** Moves an open task's due date by a number of days from today (gentle snooze). */
+  snoozeTask(taskId: string, days = 1) {
+    demo.rescheduleTask(taskId, format(addDays(new Date(), days), "yyyy-MM-dd"));
+  },
+  rescheduleTask(taskId: string, dueOn: string) {
+    const s = load();
+    commit({ ...s, tasks: s.tasks.map((t) => (t.id === taskId && !t.completedAt ? { ...t, dueOn } : t)) });
   },
   toggleLike(postId: string, userId = "me") {
     const s = load();

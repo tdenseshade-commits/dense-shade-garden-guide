@@ -2,7 +2,7 @@ import { addDays, format, subDays } from "date-fns";
 
 import type { CareLog, CareTask, CareType, DemoState, DemoUser, FeedPost, GardenPlant, Health } from "./types";
 
-export const DEMO_VERSION = 1;
+export const DEMO_VERSION = 2;
 
 /** Sample community members. "me" is the signed-in person. */
 export const DEMO_USERS: readonly DemoUser[] = [
@@ -77,6 +77,7 @@ export function makeSeed(now: Date = new Date()): DemoState {
     ["p-tomato", "fertilise", -3, "Tomato feed for fruiting."],
     ["p-maple", "inspect", 2, "Look for more scorch."],
     ["p-lemon", "fertilise", 6, "Citrus feed."],
+    ["p-bougainvillea", "general", 0, "Let the soil dry out more between waterings."],
   ];
   extra.forEach(([plantId, type, offset, note], i) =>
     tasks.push({ id: `t-x${i}`, plantId, type, dueOn: ISO(addDays(now, offset)), repeatEveryDays: null, completedAt: null, note }),
