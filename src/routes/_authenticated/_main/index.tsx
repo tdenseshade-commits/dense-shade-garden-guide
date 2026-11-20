@@ -1,12 +1,11 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Camera, MessageCircleQuestion, Sprout } from "lucide-react";
+import { Camera, HeartPulse, MessageCircleQuestion, Sprout } from "lucide-react";
 
-import { ComingSoon } from "@/components/common/ComingSoon";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { EmptyState } from "@/components/common/StateViews";
-import { TaskRow } from "@/components/plants/PlantBits";
+import { DemoBadge, TaskRow } from "@/components/plants/PlantBits";
 import { Button } from "@/components/ui/button";
 import { taskStatus, useDemo } from "@/lib/demo/store";
 import { format } from "date-fns";
@@ -21,9 +20,10 @@ export const Route = createFileRoute("/_authenticated/_main/")({
 });
 
 const contextualActions = [
-  { label: "Scan a plant", icon: Camera, hint: "Identify a plant from a photo" },
-  { label: "Ask DenseShade", icon: MessageCircleQuestion, hint: "Get gentle care guidance" },
-];
+  { label: "Scan a plant", icon: Camera, hint: "Identify a plant from a photo", tab: "identify" },
+  { label: "Check plant health", icon: HeartPulse, hint: "Spot possible problems early", tab: "health" },
+  { label: "Ask DenseShade", icon: MessageCircleQuestion, hint: "Get gentle care guidance", tab: "ask" },
+] as const;
 
 function TodayPage() {
   const { user } = Route.useRouteContext();
@@ -73,8 +73,10 @@ function TodayPage() {
             Quick help
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {contextualActions.map(({ label, icon: Icon, hint }) => (
-              <div
+            {contextualActions.map(({ label, icon: Icon, hint, tab }) => (
+              <Link
+                to="/assistant"
+                search={{ tab }}
                 key={label}
                 className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-3xl border bg-card p-4"
               >
@@ -85,8 +87,8 @@ function TodayPage() {
                   <p className="truncate font-semibold">{label}</p>
                   <p className="text-sm leading-snug text-muted-foreground">{hint}</p>
                 </div>
-                <ComingSoon />
-              </div>
+                <DemoBadge label="Demo" />
+              </Link>
             ))}
           </div>
         </section>

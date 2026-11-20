@@ -15,6 +15,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedMainRouteRouteImport } from './routes/_authenticated/_main/route'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedMainIndexRouteImport } from './routes/_authenticated/_main/index'
+import { Route as AuthenticatedMainAssistantRouteImport } from './routes/_authenticated/_main/assistant'
 import { Route as AuthenticatedMainCareRouteImport } from './routes/_authenticated/_main/care'
 import { Route as AuthenticatedMainDiscoverRouteImport } from './routes/_authenticated/_main/discover'
 import { Route as AuthenticatedMainGardenRouteImport } from './routes/_authenticated/_main/garden'
@@ -51,6 +52,12 @@ const AuthenticatedMainIndexRoute = AuthenticatedMainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedMainRouteRoute,
 } as any)
+const AuthenticatedMainAssistantRoute =
+  AuthenticatedMainAssistantRouteImport.update({
+    id: '/assistant',
+    path: '/assistant',
+    getParentRoute: () => AuthenticatedMainRouteRoute,
+  } as any)
 const AuthenticatedMainCareRoute = AuthenticatedMainCareRouteImport.update({
   id: '/care',
   path: '/care',
@@ -97,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/assistant': typeof AuthenticatedMainAssistantRoute
   '/care': typeof AuthenticatedMainCareRoute
   '/discover': typeof AuthenticatedMainDiscoverRoute
   '/garden': typeof AuthenticatedMainGardenRoute
@@ -110,6 +118,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/assistant': typeof AuthenticatedMainAssistantRoute
   '/care': typeof AuthenticatedMainCareRoute
   '/discover': typeof AuthenticatedMainDiscoverRoute
   '/garden': typeof AuthenticatedMainGardenRoute
@@ -125,6 +134,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/_main': typeof AuthenticatedMainRouteRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/_main/assistant': typeof AuthenticatedMainAssistantRoute
   '/_authenticated/_main/care': typeof AuthenticatedMainCareRoute
   '/_authenticated/_main/discover': typeof AuthenticatedMainDiscoverRoute
   '/_authenticated/_main/garden': typeof AuthenticatedMainGardenRoute
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/onboarding'
+    | '/assistant'
     | '/care'
     | '/discover'
     | '/garden'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/onboarding'
+    | '/assistant'
     | '/care'
     | '/discover'
     | '/garden'
@@ -168,6 +180,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/_main'
     | '/_authenticated/onboarding'
+    | '/_authenticated/_main/assistant'
     | '/_authenticated/_main/care'
     | '/_authenticated/_main/discover'
     | '/_authenticated/_main/garden'
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMainIndexRouteImport
       parentRoute: typeof AuthenticatedMainRouteRoute
     }
+    '/_authenticated/_main/assistant': {
+      id: '/_authenticated/_main/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AuthenticatedMainAssistantRouteImport
+      parentRoute: typeof AuthenticatedMainRouteRoute
+    }
     '/_authenticated/_main/care': {
       id: '/_authenticated/_main/care'
       path: '/care'
@@ -281,6 +301,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedMainRouteRouteChildren {
+  AuthenticatedMainAssistantRoute: typeof AuthenticatedMainAssistantRoute
   AuthenticatedMainCareRoute: typeof AuthenticatedMainCareRoute
   AuthenticatedMainDiscoverRoute: typeof AuthenticatedMainDiscoverRoute
   AuthenticatedMainGardenRoute: typeof AuthenticatedMainGardenRoute
@@ -293,6 +314,7 @@ interface AuthenticatedMainRouteRouteChildren {
 
 const AuthenticatedMainRouteRouteChildren: AuthenticatedMainRouteRouteChildren =
   {
+    AuthenticatedMainAssistantRoute: AuthenticatedMainAssistantRoute,
     AuthenticatedMainCareRoute: AuthenticatedMainCareRoute,
     AuthenticatedMainDiscoverRoute: AuthenticatedMainDiscoverRoute,
     AuthenticatedMainGardenRoute: AuthenticatedMainGardenRoute,

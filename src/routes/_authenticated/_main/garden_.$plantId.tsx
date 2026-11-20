@@ -52,6 +52,7 @@ function PlantPage() {
         <HealthBadge health={plant.health} />
         <span className="text-sm text-muted-foreground">Added {format(parseISO(plant.addedOn), "d MMM yyyy")}</span>
         <Link to="/plants/$speciesId" params={{ speciesId: species.id }} className="text-sm text-sage underline-offset-2 hover:underline">Care guide</Link>
+        <Link to="/assistant" search={{ tab: "health", plant: plant.id }} className="text-sm text-sage underline-offset-2 hover:underline">Check health (demo)</Link>
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
         <SectionCard title="Care tasks" description={`${species.light} · ${species.water}`}>
