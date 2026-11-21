@@ -72,7 +72,7 @@ function TodayPage() {
           <h2 id="quick-help" className="text-lg font-semibold">
             Quick help
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {contextualActions.map(({ label, icon: Icon, hint, tab }) => (
               <Link
                 to="/assistant"
